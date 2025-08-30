@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book.com Nairobi</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a365d;
+            --secondary: #2a4365;
+            --accent: #ff9900;
+            --light: #f5f7fa;
+            --dark: #2d3748;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --gray: #718096;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #e68a00;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c53030;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Filter Section */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Accommodation Grid */
+        .accommodations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .accommodation-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .accommodation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .accommodation-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .location {
+            color: var(--gray);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .description {
+            color: #777;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .price {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .price span {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .rating {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .special-badge {
+            background-color: var(--danger);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .card-actions button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .wishlist-btn {
+            background-color: #f7fafc;
+            color: var(--primary);
+            border: 1px solid #ddd;
+        }
+
+        .wishlist-btn:hover {
+            background-color: #edf2f7;
+        }
+
+        .wishlist-btn.active {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .book-now-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .book-now-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            color: var(--primary);
+            font-size: 32px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3748;
+            color: #cbd5e0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .accommodations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* View Styles */
+        .view-container {
+            min-height: 60vh;
+            padding: 20px 0;
+        }
+
+        .booking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .booking-info h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .booking-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #cbd5e0;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Sample data
+        const initialAccommodations = [
+            {
+                id: 1,
+                name: "Sarova Stanley",
+                type: "hotel",
+                price: 12000,
+                rating: 4.5,
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Central Nairobi",
+                description: "Luxurious 5-star hotel in the heart of Nairobi with premium amenities and exceptional service.",
+                specialOffer: true
+            },
+            {
+                id: 2,
+                name: "The Heron Portico",
+                type: "hotel",
+                price: 8500,
+                rating: 4.2,
+                image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Milimani",
+                description: "Modern hotel with excellent amenities, located in the upscale Milimani area of Nairobi.",
+                specialOffer: false
+            },
+            {
+                id: 3,
+                name: "Nairobi Safari Lodge",
+                type: "safari",
+                price: 15000,
+                rating: 4.7,
+                image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Karen",
+                description: "Authentic safari experience near Nairobi National Park with stunning views and wildlife encounters.",
+                specialOffer: true
+            },
+            {
+                id: 4,
+                name: "Westwood Apartments",
+                type: "apartment",
+                price: 6000,
+                rating: 4.0,
+                image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Westlands",
+                description: "Spacious apartments with kitchen facilities, perfect for extended stays in Nairobi.",
+                specialOffer: false
+            },
+            {
+                id: 5,
+                name: "Tribe Hotel",
+                type: "hotel",
+                price: 11000,
+                rating: 4.6,
+                image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Gigiri",
+                description: "Designer hotel with contemporary African art, located near the UN headquarters.",
+                specialOffer: true
+            },
+            {
+                id: 6,
+                name: "Emara Ole-Sereni",
+                type: "hotel",
+                price: 9500,
+                rating: 4.3,
+                image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Along Mombasa Road",
+                description: "Hotel overlooking Nairobi National Park with a unique wildlife viewing experience.",
+                specialOffer: false
+            }
+        ];
+
+        // Additional hotels in Nairobi
+        const additionalHotels = [
+            {
+                id: 7,
+                name: "The Norfolk Hotel",
+                type: "hotel",
+                price: 13000,
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Central Nairobi",
+                description: "Historic hotel with beautiful gardens and elegant rooms, a Nairobi landmark since 1904.",
+                specialOffer: false
+            },
+            {
+                id: 8,
+                name: "Radisson Blu Nairobi",
+                type: "hotel",
+                price: 14000,
+                rating: 4.6,
+                image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Upper Hill",
+                description: "Upscale hotel with panoramic city views and excellent dining options.",
+                specialOffer: true
+            },
+            {
+                id: 9,
+                name: "Hilton Nairobi",
+                type: "hotel",
+                price: 12500,
+                rating: 4.4,
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "City Centre",
+                description: "International hotel chain with premium amenities in the heart of Nairobi.",
+                specialOffer: false
+            },
+            {
+                id: 10,
+                name: "Fairmont The Norfolk",
+                type: "hotel",
+                price: 16000,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Central Nairobi",
+                description: "Luxury hotel with a rich history and exceptional service, featuring beautiful tropical gardens.",
+                specialOffer: true
+            },
+            {
+                id: 11,
+                name: "Nairobi Serena Hotel",
+                type: "hotel",
+                price: 13500,
+                rating: 4.7,
+                image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Central Nairobi",
+                description: "Award-winning hotel with elegant rooms, swimming pool, and multiple dining options.",
+                specialOffer: false
+            },
+            {
+                id: 12,
+                name: "Sankara Nairobi",
+                type: "hotel",
+                price: 14500,
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                location: "Westlands",
+                description: "Luxurious 5-star hotel with rooftop pool, spa, and exceptional dining experiences.",
+                specialOffer: true
+            }
+        ];
+
+        // Combined accommodations
+        const allAccommodations = [...initialAccommodations, ...additionalHotels];
+
+        // Main App Component
+        function App() {
+            const [accommodations, setAccommodations] = useState(allAccommodations);
+            const [wishlist, setWishlist] = useState([]);
+            const [bookings, setBookings] = useState([]);
+            const [currentView, setCurrentView] = useState('home');
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [user, setUser] = useState(null);
+            const [filter, setFilter] = useState('all');
+            const [showLoginModal, setShowLoginModal] = useState(false);
+            const [showBookingModal, setShowBookingModal] = useState(false);
+            const [selectedAccommodation, setSelectedAccommodation] = useState(null);
+
+            // Load data from localStorage on component mount
+            useEffect(() => {
+                const savedWishlist = localStorage.getItem('wishlist');
+                const savedBookings = localStorage.getItem('bookings');
+                const savedUser = localStorage.getItem('user');
+                
+                if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+                if (savedBookings) setBookings(JSON.parse(savedBookings));
+                if (savedUser) {
+                    setUser(JSON.parse(savedUser));
+                    setIsLoggedIn(true);
+                }
+            }, []);
+
+            // Save to localStorage whenever state changes
+            useEffect(() => {
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                if (user) {
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+            }, [wishlist, bookings, user]);
+
+            const handleLogin = (email, password) => {
+                // Simple mock authentication
+                setUser({ email, name: email.split('@')[0] });
+                setIsLoggedIn(true);
+                setShowLoginModal(false);
+                setCurrentView('home');
+            };
+
+            const handleLogout = () => {
+                setIsLoggedIn(false);
+                setUser(null);
+                localStorage.removeItem('user');
+            };
+
+            const addToWishlist = (accommodation) => {
+                if (!isLoggedIn) {
+                    setShowLoginModal(true);
+                    return;
+                }
+                
+                if (!wishlist.find(item => item.id === accommodation.id)) {
+                    setWishlist([...wishlist, accommodation]);
+                } else {
+                    setWishlist(wishlist.filter(item => item.id !== accommodation.id));
+                }
+            };
+
+            const removeFromWishlist = (id) => {
+                setWishlist(wishlist.filter(item => item.id !== id));
+            };
+
+            const handleBookNow = (accommodation) => {
+                if (!isLoggedIn) {
+                    setShowLoginModal(true);
+                    return;
+                }
+                
+                setSelectedAccommodation(accommodation);
+                setShowBookingModal(true);
+            };
+
+            const bookAccommodation = (accommodation, checkInDate, checkOutDate, guests) => {
+                const booking = {
+                    id: Date.now(),
+                    accommodation,
+                    checkInDate,
+                    checkOutDate,
+                    guests,
+                    bookedAt: new Date().toISOString(),
+                    status: 'confirmed'
+                };
+                setBookings([...bookings, booking]);
+                setShowBookingModal(false);
+            };
+
+            const cancelBooking = (id) => {
+                setBookings(bookings.map(booking => 
+                    booking.id === id ? {...booking, status: 'cancelled'} : booking
+                ));
+            };
+
+            const filteredAccommodations = filter === 'all' 
+                ? accommodations 
+                : accommodations.filter(acc => acc.type === filter || (filter === 'deals' && acc.specialOffer));
+
+            return (
+                <div className="App">
+                    <Header 
+                        isLoggedIn={isLoggedIn} 
+                        user={user} 
+                        onLogout={handleLogout}
+                        currentView={currentView}
+                        setCurrentView={setCurrentView}
+                        setFilter={setFilter}
+                        wishlistCount={wishlist.length}
+                    />
+                    
+                    <main className="container">
+                        {currentView === 'home' && (
+                            <HomeView 
+                                accommodations={filteredAccommodations}
+                                filter={filter}
+                                setFilter={setFilter}
+                                onAddToWishlist={addToWishlist}
+                                onBookNow={handleBookNow}
+                                wishlist={wishlist}
+                            />
+                        )}
+                        
+                        {currentView === 'wishlist' && (
+                            <WishlistView 
+                                wishlist={wishlist} 
+                                onRemove={removeFromWishlist}
+                                onBookNow={handleBookNow}
+                                isLoggedIn={isLoggedIn}
+                            />
+                        )}
+                        
+                        {currentView === 'bookings' && (
+                            <BookingsView 
+                                bookings={bookings} 
+                                onCancelBooking={cancelBooking}
+                                isLoggedIn={isLoggedIn}
+                            />
+                        )}
+                    </main>
+                    
+                    {showLoginModal && (
+                        <LoginModal 
+                            onLogin={handleLogin}
+                            onClose={() => setShowLoginModal(false)}
+                        />
+                    )}
+                    
+                    {showBookingModal && selectedAccommodation && (
+                        <BookingModal 
+                            accommodation={selectedAccommodation}
+                            onBook={bookAccommodation}
+                            onClose={() => setShowBookingModal(false)}
+                        />
+                    )}
+                    
+                    <Footer />
+                </div>
+            );
+        }
+
+        // Header Component
+        function Header({ isLoggedIn, user, onLogout, currentView, setCurrentView, setFilter, wishlistCount }) {
+            return (
+                <header>
+                    <div className="container">
+                        <div className="header-content">
+                            <div className="logo" onClick={() => setCurrentView('home')}>
+                                <i className="fas fa-hotel"></i>
+                                <h1>Book.com Nairobi</h1>
+                            </div>
+                            <nav>
+                                <ul>
+                                    <li><a 
+                                        className={currentView === 'home' ? 'active' : ''} 
+                                        onClick={() => setCurrentView('home')}
+                                        href="#"
+                                    >Home</a></li>
+                                    <li><a 
+                                        href="#"
+                                        onClick={() => { setCurrentView('home'); setFilter('hotel'); }}
+                                    >Hotels</a></li>
+                                    <li><a 
+                                        href="#"
+                                        onClick={() => { setCurrentView('home'); setFilter('apartment'); }}
+                                    >Apartments</a></li>
+                                    <li><a 
+                                        href="#"
+                                        onClick={() => { setCurrentView('home'); setFilter('safari'); }}
+                                    >Safari Lodges</a></li>
+                                    <li><a 
+                                        href="#"
+                                        onClick={() => { setCurrentView('home'); setFilter('deals'); }}
+                                    >Special Offers</a></li>
+                                    {isLoggedIn && (
+                                        <>
+                                            <li><a 
+                                                className={currentView === 'wishlist' ? 'active' : ''} 
+                                                onClick={() => setCurrentView('wishlist')}
+                                                href="#"
+                                            >Wishlist ({wishlistCount})</a></li>
+                                            <li><a 
+                                                className={currentView === 'bookings' ? 'active' : ''} 
+                                                onClick={() => setCurrentView('bookings')}
+                                                href="#"
+                                            >My Bookings</a></li>
+                                        </>
+                                    )}
+                                </ul>
+                            </nav>
+                            <div className="auth-buttons">
+                                {isLoggedIn ? (
+                                    <>
+                                        <span style={{color: 'white', marginRight: '10px'}}>Hello, {user.name}</span>
+                                        <button className="btn btn-outline" onClick={onLogout}>Logout</button>
+                                    </>
+                                ) : (
+                                    <button className="btn btn-primary" onClick={() => setCurrentView('login')}>Sign In</button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        // Home View Component
+        function HomeView({ accommodations, filter, setFilter, onAddToWishlist, onBookNow, wishlist }) {
+            return (
+                <>
+                    <section className="hero">
+                        <h2>Discover Amazing Stays in Nairobi</h2>
+                        <p>Find the perfect hotel, apartment, or safari lodge for your visit to Kenya's vibrant capital city</p>
+                        <button className="btn btn-primary">Explore Now</button>
+                    </section>
+                    
+                    <div className="filters">
+                        <button 
+                            className={`filter-btn ${filter === 'all' ? 'active' : ''}`} 
+                            onClick={() => setFilter('all')}
+                        >
+                            <i className="fas fa-bed"></i> All Accommodations
+                        </button>
+                        <button 
+                            className={`filter-btn ${filter === 'hotel' ? 'active' : ''}`} 
+                            onClick={() => setFilter('hotel')}
+                        >
+                            <i className="fas fa-hotel"></i> Hotels
+                        </button>
+                        <button 
+                            className={`filter-btn ${filter === 'apartment' ? 'active' : ''}`} 
+                            onClick={() => setFilter('apartment')}
+                        >
+                            <i className="fas fa-building"></i> Apartments
+                        </button>
+                        <button 
+                            className={`filter-btn ${filter === 'safari' ? 'active' : ''}`} 
+                            onClick={() => setFilter('safari')}
+                        >
+                            <i className="fas fa-tree"></i> Safari Lodges
+                        </button>
+                        <button 
+                            className={`filter-btn ${filter === 'deals' ? 'active' : ''}`} 
+                            onClick={() => setFilter('deals')}
+                        >
+                            <i className="fas fa-tag"></i> Special Offers
+                        </button>
+                    </div>
+                    
+                    <h2 className="section-title">
+                        {filter === 'all' && 'Featured Accommodations'}
+                        {filter === 'hotel' && 'Hotels in Nairobi'}
+                        {filter === 'apartment' && 'Apartments in Nairobi'}
+                        {filter === 'safari' && 'Safari Lodges near Nairobi'}
+                        {filter === 'deals' && 'Special Offers & Deals'}
+                    </h2>
+                    
+                    <div className="accommodations-grid">
+                        {accommodations.map(acc => (
+                            <AccommodationCard 
+                                key={acc.id} 
+                                accommodation={acc} 
+                                onAddToWishlist={onAddToWishlist}
+                                onBookNow={onBookNow}
+                                isInWishlist={wishlist.some(item => item.id === acc.id)}
+                            />
+                        ))}
+                    </div>
+                </>
+            );
+        }
+
+        // Accommodation Card Component
+        function AccommodationCard({ accommodation, onAddToWishlist, onBookNow, isInWishlist }) {
+            return (
+                <div className="accommodation-card">
+                    <div className="card-image">
+                        <img src={accommodation.image} alt={accommodation.name} />
+                    </div>
+                    <div className="card-content">
+                        {accommodation.specialOffer && <div className="special-badge">Special Offer</div>}
+                        <h3>{accommodation.name}</h3>
+                        <p className="location"><i className="fas fa-map-marker-alt"></i> {accommodation.location}</p>
+                        <p className="description">{accommodation.description}</p>
+                        <div className="card-footer">
+                            <div className="price">KSh {accommodation.price.toLocaleString()} <span>/night</span></div>
+                            <div className="rating"><i className="fas fa-star"></i> {accommodation.rating}</div>
+                        </div>
+                        <div className="card-actions">
+                            <button 
+                                className={`wishlist-btn ${isInWishlist ? 'active' : ''}`}
+                                onClick={() => onAddToWishlist(accommodation)}
+                            >
+                                <i className={`${isInWishlist ? 'fas' : 'far'} fa-heart`}></i> 
+                                {isInWishlist ? 'In Wishlist' : 'Wishlist'}
+                            </button>
+                            <button 
+                                className="book-now-btn"
+                                onClick={() => onBookNow(accommodation)}
+                            >
+                                <i className="fas fa-calendar-check"></i> Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Wishlist View Component
+        function WishlistView({ wishlist, onRemove, onBookNow, isLoggedIn }) {
+            if (!isLoggedIn) {
+                return (
+                    <div className="view-container">
+                        <div className="empty-state">
+                            <i className="fas fa-lock"></i>
+                            <h3>Authentication Required</h3>
+                            <p>Please sign in to view your wishlist</p>
+                        </div>
+                    </div>
+                );
+            }
+            
+            return (
+                <div className="view-container">
+                    <h2 className="section-title">Your Wishlist</h2>
+                    
+                    {wishlist.length === 0 ? (
+                        <div className="empty-state">
+                            <i className="far fa-heart"></i>
+                            <h3>Your wishlist is empty</h3>
+                            <p>Start adding accommodations you like to your wishlist</p>
+                        </div>
+                    ) : (
+                        <div className="accommodations-grid">
+                            {wishlist.map(acc => (
+                                <div key={acc.id} className="accommodation-card">
+                                    <div className="card-image">
+                                        <img src={acc.image} alt={acc.name} />
+                                    </div>
+                                    <div className="card-content">
+                                        {acc.specialOffer && <div className="special-badge">Special Offer</div>}
+                                        <h3>{acc.name}</h3>
+                                        <p className="location"><i className="fas fa-map-marker-alt"></i> {acc.location}</p>
+                                        <p className="description">{acc.description}</p>
+                                        <div className="card-footer">
+                                            <div className="price">KSh {acc.price.toLocaleString()} <span>/night</span></div>
+                                            <div className="rating"><i className="fas fa-star"></i> {acc.rating}</div>
+                                        </div>
+                                        <div className="card-actions">
+                                            <button 
+                                                className="wishlist-btn active"
+                                                onClick={() => onRemove(acc.id)}
+                                            >
+                                                <i className="fas fa-trash"></i> Remove
+                                            </button>
+                                            <button 
+                                                className="book-now-btn"
+                                                onClick={() => onBookNow(acc)}
+                                            >
+                                                <i className="fas fa-calendar-check"></i> Book Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Bookings View Component
+        function BookingsView({ bookings, onCancelBooking, isLoggedIn }) {
+            if (!isLoggedIn) {
+                return (
+                    <div className="view-container">
+                        <div className="empty-state">
+                            <i className="fas fa-lock"></i>
+                            <h3>Authentication Required</h3>
+                            <p>Please sign in to view your bookings</p>
+                        </div>
+                    </div>
+                );
+            }
+            
+            const activeBookings = bookings.filter(b => b.status === 'confirmed');
+            const cancelledBookings = bookings.filter(b => b.status === 'cancelled');
+            
+            return (
+                <div className="view-container">
+                    <h2 className="section-title">My Bookings</h2>
+                    
+                    {bookings.length === 0 ? (
+                        <div className="empty-state">
+                            <i className="far fa-calendar-check"></i>
+                            <h3>You haven't made any bookings yet</h3>
+                            <p>Start exploring our accommodations and make your first booking</p>
+                        </div>
+                    ) : (
+                        <>
+                            <h3>Active Bookings ({activeBookings.length})</h3>
+                            {activeBookings.length === 0 ? (
+                                <p>No active bookings</p>
+                            ) : (
+                                activeBookings.map(booking => (
+                                    <BookingItem 
+                                        key={booking.id} 
+                                        booking={booking} 
+                                        onCancelBooking={onCancelBooking} 
+                                    />
+                                ))
+                            )}
+                            
+                            <h3 style={{marginTop: '30px'}}>Cancelled Bookings ({cancelledBookings.length})</h3>
+                            {cancelledBookings.length === 0 ? (
+                                <p>No cancelled bookings</p>
+                            ) : (
+                                cancelledBookings.map(booking => (
+                                    <BookingItem 
+                                        key={booking.id} 
+                                        booking={booking} 
+                                        onCancelBooking={onCancelBooking} 
+                                    />
+                                ))
+                            )}
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        // Booking Item Component
+        function BookingItem({ booking, onCancelBooking }) {
+            return (
+                <div className="booking-item">
+                    <div className="booking-info">
+                        <h4>{booking.accommodation.name}</h4>
+                        <p>
+                            {new Date(booking.checkInDate).toLocaleDateString()} - {new Date(booking.checkOutDate).toLocaleDateString()} 
+                            • {booking.guests} guest{booking.guests > 1 ? 's' : ''}
+                        </p>
+                        <p>Booked on: {new Date(booking.bookedAt).toLocaleDateString()}</p>
+                        <p>Status: <span style={{color: booking.status === 'confirmed' ? 'green' : 'red'}}>
+                            {booking.status}
+                        </span></p>
+                    </div>
+                    {booking.status === 'confirmed' && (
+                        <button 
+                            className="btn btn-danger"
+                            onClick={() => onCancelBooking(booking.id)}
+                        >
+                            Cancel Booking
+                        </button>
+                    )}
+                </div>
+            );
+        }
+
+        // Login Modal Component
+        function LoginModal({ onLogin, onClose }) {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                onLogin(email, password);
+            };
+            
+            return (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h2>Sign In to Your Account</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Email Address</label>
+                                <input 
+                                    type="email" 
+                                    value={email} 
+                                    onChange={(e) => setEmail(e.target.value)} 
+                                    required 
+                                    placeholder="Enter your email"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input 
+                                    type="password" 
+                                    value={password} 
+                                    onChange={(e) => setPassword(e.target.value)} 
+                                    required 
+                                    placeholder="Enter your password"
+                                />
+                            </div>
+                            <div className="modal-actions">
+                                <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
+                                <button type="submit" className="btn btn-primary">Sign In</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // Booking Modal Component
+        function BookingModal({ accommodation, onBook, onClose }) {
+            const [checkInDate, setCheckInDate] = useState('');
+            const [checkOutDate, setCheckOutDate] = useState('');
+            const [guests, setGuests] = useState(1);
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                onBook(accommodation, checkInDate, checkOutDate, guests);
+            };
+            
+            return (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h2>Book {accommodation.name}</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Check-in Date</label>
+                                <input 
+                                    type="date" 
+                                    value={checkInDate} 
+                                    onChange={(e) => setCheckInDate(e.target.value)} 
+                                    required 
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Check-out Date</label>
+                                <input 
+                                    type="date" 
+                                    value={checkOutDate} 
+                                    onChange={(e) => setCheckOutDate(e.target.value)} 
+                                    required 
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Number of Guests</label>
+                                <input 
+                                    type="number" 
+                                    min="1" 
+                                    value={guests} 
+                                    onChange={(e) => setGuests(parseInt(e.target.value))} 
+                                    required 
+                                />
+                            </div>
+                            <div className="modal-actions">
+                                <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
+                                <button type="submit" className="btn btn-primary">Complete Booking</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return (
+                <footer>
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-column">
+                                <h3>Book.com Nairobi</h3>
+                                <p>Your trusted partner for finding the perfect accommodation in Nairobi, Kenya.</p>
+                            </div>
+                            <div className="footer-column">
+                                <h3>Quick Links</h3>
+                                <ul>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                            <div className="footer-column">
+                                <h3>Accommodation Types</h3>
+                                <ul>
+                                    <li><a href="#">Hotels</a></li>
+                                    <li><a href="#">Apartments</a></li>
+                                    <li><a href="#">Safari Lodges</a></li>
+                                    <li><a href="#">Vacation Rentals</a></li>
+                                </ul>
+                            </div>
+                            <div className="footer-column">
+                                <h3>Contact Info</h3>
+                                <ul>
+                                    <li><i className="fas fa-map-marker-alt"></i> 123 Main Street, Nairobi</li>
+                                    <li><i className="fas fa-phone"></i> +254 700 123 456</li>
+                                    <li><i className="fas fa-envelope"></i> info@bookcom-nairobi.com</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="copyright">
+                            <p>&copy; 2023 Book.com Nairobi. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
